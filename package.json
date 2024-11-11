@@ -1,9 +1,12 @@
 {
   "name": "llama-ocr",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "PDF to markdown (OCR) with Llama 3.2 Vision.",
   "author": "Hassan El Mghari (@nutlope)",
-  "repository": "Nutlope/llama-ocr",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Nutlope/llama-ocr.git"
+  },
   "license": "MIT",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
