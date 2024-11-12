@@ -1,6 +1,6 @@
 import Together from "together-ai";
-import { fromPath } from "pdf2pic";
 import fs from "fs";
+// import { fromPath } from "pdf2pic";
 
 export async function ocr({
   filePath,
@@ -20,9 +20,6 @@ export async function ocr({
     apiKey,
   });
 
-  console.log("doing it");
-
-  // if the file is an image, return the markdown directly
   let finalMarkdown = await getMarkDown({ together, visionLLM, filePath });
 
   return finalMarkdown;
@@ -50,13 +47,8 @@ export async function ocr({
   //       console.error("Error converting PDF:", error);
   //     });
 
-  // continue here
+  // continue here by calling the getMarkDown function for each image
   // }
-}
-
-function encodeImage(imagePath: string) {
-  const imageFile = fs.readFileSync(imagePath);
-  return Buffer.from(imageFile).toString("base64");
 }
 
 async function getMarkDown({
@@ -68,7 +60,7 @@ async function getMarkDown({
   visionLLM: string;
   filePath: string;
 }) {
-  const systemPrompt = `Convert the provided PDF page into Markdown format. Ensure that all content from the page is included, such as headers, footers, subtexts, images (with alt text if possible), tables, and any other elements.
+  const systemPrompt = `Convert the provided image into Markdown format. Ensure that all content from the page is included, such as headers, footers, subtexts, images (with alt text if possible), tables, and any other elements.
 
   Requirements:
 
@@ -76,8 +68,11 @@ async function getMarkDown({
   - No Delimiters: Do not use code fences or delimiters like \`\`\`markdown.
   - Complete Content: Do not omit any part of the page, including headers, footers, and subtext.
   `;
-  const base64_image = encodeImage(filePath);
-  // console.log(base64_image);
+
+  const finalImageUrl = isRemoteFile(filePath)
+    ? filePath
+    : `data:image/jpeg;base64,${encodeImage(filePath)}`;
+
   const output = await together.chat.completions.create({
     model: visionLLM,
     messages: [
@@ -89,7 +84,7 @@ async function getMarkDown({
           {
             type: "image_url",
             image_url: {
-              url: `data:image/jpeg;base64,${base64_image}`,
+              url: finalImageUrl,
             },
           },
         ],
@@ -98,4 +93,13 @@ async function getMarkDown({
   });
 
   return output.choices[0].message.content;
+}
+
+function encodeImage(imagePath: string) {
+  const imageFile = fs.readFileSync(imagePath);
+  return Buffer.from(imageFile).toString("base64");
+}
+
+function isRemoteFile(filePath: string): boolean {
+  return filePath.startsWith("http://") || filePath.startsWith("https://");
 }
