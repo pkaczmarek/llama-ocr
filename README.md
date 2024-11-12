@@ -34,7 +34,8 @@ This library uses the free Llama 3.2 endpoint from [Together AI](https://dub.sh/
 
 - [x] Add support for local images OCR
 - [x] Add support for remote images OCR
-- [ ] Add support for PDF OCR (take screenshots of PDF & feed to vision model)
+- [ ] Add support for single page PDFs
+- [ ] Add support for multi-page PDFs OCR (take screenshots of PDF & feed to vision model)
 - [ ] Add support for JSON output in addition to markdown
 
 ## Credit
