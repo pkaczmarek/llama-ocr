@@ -1,11 +1,10 @@
 import Together from "together-ai";
 import fs from "fs";
-// import { fromPath } from "pdf2pic";
 
 export async function ocr({
   filePath,
   apiKey = process.env.TOGETHER_API_KEY,
-  model = "free",
+  model = "Llama-3.2-90B-Vision",
 }: {
   filePath: string;
   apiKey?: string;
@@ -23,32 +22,6 @@ export async function ocr({
   let finalMarkdown = await getMarkDown({ together, visionLLM, filePath });
 
   return finalMarkdown;
-
-  // if (filePath.endsWith(".pdf")) {
-  //   const options = {
-  //     density: 100, // Image density
-  //     saveFilename: "output", // Output filename
-  //     savePath: "./images", // Output directory
-  //     format: "png", // Image format: png, jpeg, etc.
-  //     width: 2550, // Desired width of the image
-  //     height: 3300, // Desired height of the image
-  //   };
-
-  //   // Create a converter instance
-  //   const converter = fromPath(filePath, options);
-
-  //   // Convert all pages to images
-  //   await converter
-  //     .bulk(-1)
-  //     .then((resolve) => {
-  //       console.log("Images converted:", resolve);
-  //     })
-  //     .catch((error) => {
-  //       console.error("Error converting PDF:", error);
-  //     });
-
-  // continue here by calling the getMarkDown function for each image
-  // }
 }
 
 async function getMarkDown({

@@ -21,7 +21,6 @@ import { ocr } from "llama-ocr";
 
 const markdown = await ocr({
   filePath: "./trader-joes-receipt.jpg", // path to your image (soon PDF!)
-  model: "Llama-3.2-90B-Vision", // optional, defaults to "free"
   apiKey: process.env.TOGETHER_API_KEY, // Together AI API key
 });
 ```
@@ -29,6 +28,8 @@ const markdown = await ocr({
 ## How it works
 
 This library uses the free Llama 3.2 endpoint from [Together AI](https://dub.sh/together-ai) to parse images and return markdown. Paid endpoints for Llama 3.2 11B and Llama 3.2 90B are also available for faster performance and higher rate limits.
+
+You can control this with the `model` option which is set to `Llama-3.2-90B-Vision` by default but can also accept `free` or `Llama-3.2-11B-Vision`.
 
 ## Roadmap
 
